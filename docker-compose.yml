@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:9.6.5
+    ports: 
+      - "5432:5432"
+  server:
+    build: ./server/
+    command:
+      - /bin/bash
+      - -c
+      - |
+          npm install -g nodemon
+          npm install
+          nodemon index.js
+    volumes:
+      - ./server:/server
+    tmpfs:
+      - /server/node_modules:exec
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  client:
+    build: ./app/
+    command:
+      - /bin/bash
+      - -c
+      - |
+          yarn install
+          yarn start
+    volumes:
+      - ./app:/app
+    tmpfs:
+      - /app/node_modules:exec
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - server
