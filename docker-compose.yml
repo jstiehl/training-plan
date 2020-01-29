@@ -11,8 +11,8 @@ services:
       - /bin/bash
       - -c
       - |
-          npm install -g nodemon
-          npm install
+          yarn global add nodemon
+          yarn
           nodemon index.js
     volumes:
       - ./server:/server
