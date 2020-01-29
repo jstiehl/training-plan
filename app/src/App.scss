@@ -1,0 +1,97 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.main-navigation {
+  flex: 1;
+  background-color: grey;
+}
+
+.main-routes {
+  flex: 10;
+}
+
+.nav-item {
+  display: block;
+  margin-top: 10px;
+  min-width: 200px;
+  color: white;
+  text-decoration: none;
+  &__active {
+    text-decoration: underline;
+  }
+}
+
+.plan-periods {
+  
+}
+
+.day-card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 95%;
+  margin:auto;
+  .day-card {
+    border: 1px solid black;
+    flex-grow: 1;
+    min-height: 300px;
+    min-width: 300px;
+    margin-right: 5px;
+    margin-top: 5px;
+    .day-title {
+      border-bottom: 1px solid black;
+    }
+  }
+}
+
+.workouts {
+  text-align: left;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

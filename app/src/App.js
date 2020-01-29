@@ -1,25 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Router } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
+import Routes from './Routes'
+import Nav from './components/Nav'
+import './App.scss';
+
+const history = createBrowserHistory()
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router history={history}>
+      <div className="App">
+        <header className="App-header">
+          <h2>Training Plan</h2>
+        </header>
+        <div className="main-container">
+          <div className="main-navigation">
+            <Nav />
+          </div>
+          <div className="main-routes">
+            <Routes />
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 }
 
