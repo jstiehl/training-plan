@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import Plans from '../components/Plans'
+import PlansActions from '../actions/plans'
+import { useFetching } from '../libs/hooks'
+
 
 const PlansContainer = props => {
   //use useEffect and useState to fetch users plans
-  const [plans, setPlans] = useState([{id: 1, name:"Training 2020", periods: [{id:1, name: "Base Period", duration: 4}]}])
-
-  useEffect(() => {
-    if(false) {
-      setPlans([])
-    }
-  }, [plans])
-
+  useFetching(PlansActions.getPlans)
+  const plans = useSelector(state => state.plans)
   return (
     <Plans 
-      plans={plans}/>
+      plans={plans.plans}/>
   )
 }
 

@@ -7,7 +7,7 @@ const PlansList = ({ plans }) => {
     }
 
     const plansList = plans.map((plan, i) => {
-      return <li key={i}>{plan.name}</li>
+      return <li key={i}>{plan.name}: {plan.description}</li>
     })
     return (
       <ul>

@@ -1,8 +1,11 @@
 import React, { Fragment, useState } from 'react'
 import { Route, useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PlansList from './PlansList'
 import WeeklyPlan from './WeeklyPlan'
+import { useFetching } from '../libs/hooks'
+import PlansActions from '../actions/plans'
 
 const Plans = ({plans}) => {
   return (
@@ -63,7 +66,12 @@ const PlanView = ({ plan }) => {
   let history = useHistory()
   const [planPeriodName, setPlanPeriodName] = useState('')
   const [planPeriodDuration, setPlanPeriodDuration] = useState('')
-
+  useFetching(PlansActions.getPlanPeriods)
+  const periods = useSelector(state => state.plans.periods)
+  console.log(periods)
+  if(!plan) {
+    return null
+  }
   return (
     <div className='plan-periods'>
       <h3>Plan Periods for {plan.name}</h3>
@@ -80,7 +88,7 @@ const PlanView = ({ plan }) => {
           value={planPeriodDuration}/>
       </div>
       <button onClick={() => history.push('/plans/1')}>Create Plan</button>
-      <PlansList plans={plan.periods || []} />
+      <PlansList plans={periods[plan.id] || []} />
     </div>
   )
 }

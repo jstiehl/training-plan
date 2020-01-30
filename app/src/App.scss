@@ -86,6 +86,14 @@
   text-align: left;
 }
 
+.add-button {
+  background: url("/plus.png") no-repeat;
+  background-size: contain;
+  border: none;
+  height: 15px;
+  width: 15px;
+}
+
 ul {
   list-style: none;
   padding: 0;
