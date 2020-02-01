@@ -1,6 +1,14 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useFetching } from '../libs/hooks'
+import PlansActions from '../actions/plans'
+
 const DAYS_OF_THE_WEEK = [1,2,3,4,5,6,0]
-const WeeklyPlan = ({ workouts }) => {
+
+const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {
+  useFetching(PlansActions.getPlanPeriods)
+  const periods = useSelector(state => state.plans.periods)
+  const period = (periods[planid] && periods[planid].find(p => p.id === parseInt(periodid))) || {}
   let dayCards = DAYS_OF_THE_WEEK.map(day => {
     return <DayCard day={day} key={day}/>
   })
@@ -8,6 +16,7 @@ const WeeklyPlan = ({ workouts }) => {
   return (
     <div>
       <h3>Weekly Workout Plan</h3>
+      {period.id ? <h5>{period.name}</h5> : null}
       <div className="day-card-container">
         {dayCards}
       </div>

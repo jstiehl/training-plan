@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Route, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-import PlansList from './PlansList'
+import { PlansList, PeriodsList } from './PlansList'
 import WeeklyPlan from './WeeklyPlan'
 import { useFetching } from '../libs/hooks'
 import PlansActions from '../actions/plans'
@@ -17,11 +17,14 @@ const Plans = ({plans}) => {
       <Route 
         path="/plans/:id"
         exact
-        render={() => (<PlanView plan={plans[0]}/>)} />
+        render={props => {
+          const { match: { params: { id }}} = props
+          return <PlanView plan={plans.find(plan => plan.id === parseInt(id))}/>
+        }}/>
       <Route 
-        path="/plans/:id/periods/:id"
+        path="/plans/:id/periods/:pid"
         exact
-        render={() => (<WeeklyPlan plan={plans[0]}/>)} />
+        render={props => (<WeeklyPlan {...props}/>)} />
     </Fragment>
   )
 }
@@ -68,7 +71,7 @@ const PlanView = ({ plan }) => {
   const [planPeriodDuration, setPlanPeriodDuration] = useState('')
   useFetching(PlansActions.getPlanPeriods)
   const periods = useSelector(state => state.plans.periods)
-  console.log(periods)
+
   if(!plan) {
     return null
   }
@@ -87,8 +90,8 @@ const PlanView = ({ plan }) => {
           placeholder='Enter Plan Period Duration in Weeks' 
           value={planPeriodDuration}/>
       </div>
-      <button onClick={() => history.push('/plans/1')}>Create Plan</button>
-      <PlansList plans={periods[plan.id] || []} />
+      <button onClick={() => history.push('/plans/1')}>Create Period</button>
+      <PeriodsList periods={periods[plan.id] || []} />
     </div>
   )
 }

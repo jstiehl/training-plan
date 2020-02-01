@@ -33,6 +33,7 @@ drop table if exists training_plan_period cascade;
 create table training_plan_period(
   id serial primary key not null,
   planid int references training_plan(id) not null,
+  duration int not null,
   name text not null,
   weekly_plan jsonb null,
   created_date TIMESTAMP(0) default current_timestamp(0) not null

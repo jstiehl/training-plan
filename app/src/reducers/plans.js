@@ -12,7 +12,6 @@ const plans = (state = initialState, action) => {
         plans: action.payload
       }
     case types.PLAN_PERIODS_RECEIVED:
-    console.log(action)
       return {
         ...state,
         periods: {
