@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Select from 'react-select'
 import { useFetching } from '../libs/hooks'
 import PlansActions from '../actions/plans'
 
 const DAYS_OF_THE_WEEK = [1,2,3,4,5,6,0]
+
+const options = [
+  { value: 'zone1', label: 'Zone 1' },
+  { value: 'zone2', label: 'Zone 2' },
+  { value: 'zone3', label: 'Zone 3' },
+  { value: 'strength', label: 'Strength' },
+];
 
 const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {
   useFetching(PlansActions.getPlanPeriods)
@@ -15,7 +24,10 @@ const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {
 
   return (
     <div>
-      <h3>Weekly Workout Plan</h3>
+      <div className="section-title">
+        <Link to={`/plans/${planid}`} className="back-button">&lt;Back</Link>
+        <h3>Weekly Workout Plan</h3>
+      </div>
       {period.id ? <h5>{period.name}</h5> : null}
       <div className="day-card-container">
         {dayCards}
@@ -43,18 +55,28 @@ const DayCard = props => {
       <div className="workouts">
         <p>AM</p>
         <button className="add-button" onClick={addWorkout("AM")} disabled={addAM}/><label>Add Workout</label>
-        {addAM ? <div>Form Here</div> : null}
+        {addAM ? <WorkoutForm /> : null}
         <p>PM</p>
         <button className="add-button" onClick={addWorkout("PM")} disabled={addPM}/><label>Add Workout</label>
-        {addPM ? <div>Form Here</div> : null}
+        {addPM ? <WorkoutForm /> : null}
       </div>
     </div>
   )
 }
 
-// const WorkoutForm = props => {
-
-// }
+const WorkoutForm = props => {
+  return (
+    <div className="workout-form">
+      <label>Workout Type</label><br />
+      <Select
+        value={undefined}
+        onChange={()=>{}}
+        options={options} />
+      <label>Description</label><br />
+      <input type="textarea" onChange={()=>{}} placeholder="Enter workout description" />
+    </div>
+  )
+}
 
 const dayMap = day => {
   switch(day) {

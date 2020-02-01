@@ -72,7 +72,7 @@
     min-width: 0;
     border: 1px solid black;
     flex-grow: 1;
-    min-height: 300px;
+    min-height: 400px;
     min-width: 300px;
     margin-right: 5px;
     margin-top: 5px;
@@ -86,12 +86,33 @@
   text-align: left;
 }
 
+.workout-form {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 10px;
+  input {
+    width: 98%;
+  }
+}
+
 .add-button {
   background: url("/plus.png") no-repeat;
   background-size: contain;
   border: none;
   height: 15px;
   width: 15px;
+}
+
+.section-title {
+  text-align: left;
+  h3 {
+    text-align: center;
+  }
+  .back-button {
+    margin-top: 5px;
+    margin-left: 5px;
+    text-decoration: none;
+  }
 }
 
 ul {

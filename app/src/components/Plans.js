@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Route, useHistory } from 'react-router-dom'
+import { Route, useHistory, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { PlansList, PeriodsList } from './PlansList'
@@ -77,7 +77,11 @@ const PlanView = ({ plan }) => {
   }
   return (
     <div className='plan-periods'>
-      <h3>Plan Periods for {plan.name}</h3>
+      <div className="section-title">
+        <Link to="/plans" className="back-button">&lt;Back</Link>
+        <h3>Plan Periods for {plan.name}</h3>
+      </div>
+      <PeriodsList periods={periods[plan.id] || []} />
       <div>
         <input 
           onChange={e => setPlanPeriodName(e.target.value)} 
@@ -91,7 +95,6 @@ const PlanView = ({ plan }) => {
           value={planPeriodDuration}/>
       </div>
       <button onClick={() => history.push('/plans/1')}>Create Period</button>
-      <PeriodsList periods={periods[plan.id] || []} />
     </div>
   )
 }
