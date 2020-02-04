@@ -1,6 +1,6 @@
 FROM node:10
 
-RUN yarn global add create-react-app
+RUN npm install -g create-react-app
 
 RUN mkdir /app
 WORKDIR /app
@@ -13,8 +13,8 @@ ADD . /app
 
 #COPY package.json /usr/src/app/package.json
 
-RUN yarn install --silent
+RUN npm install --silent
 
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]
 
 EXPOSE 3000

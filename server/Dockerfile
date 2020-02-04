@@ -5,7 +5,7 @@ WORKDIR /server
 
 # Install app into container
 ADD . .
-RUN yarn
+RUN npm install
 
 CMD ["node", "index.js"]
 
