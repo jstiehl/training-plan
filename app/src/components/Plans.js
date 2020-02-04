@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { Route, useHistory, Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { PlansList, PeriodsList } from './PlansList'
 import WeeklyPlan from './WeeklyPlan'
@@ -51,8 +51,18 @@ DefaultPlansView.propTypes = {
 }
 
 const CreateNewPlan = () => {
-  let history = useHistory()
+  const dispatch = useDispatch()
+  // let history = useHistory()
   const [planName, setPlanName] = useState('')
+  const [planDescription, setPlanDescription] = useState('')
+
+  const handleCreate = e => {
+    e.preventDefault()
+    return dispatch(PlansActions.createPlan({
+      name: planName,
+      description: planDescription
+    }))
+  }
 
   return (
     <div>
@@ -60,7 +70,11 @@ const CreateNewPlan = () => {
         onChange={e => setPlanName(e.target.value)} 
         placeholder='Enter Plan Name' 
         value={planName}/>
-      <button onClick={() => history.push('/plans/1')}>Create Plan</button>
+      <input 
+        onChange={e => setPlanDescription(e.target.value)} 
+        placeholder='Enter Plan Description' 
+        value={planDescription}/>
+      <button onClick={handleCreate}>Create Plan</button>
     </div>
   )
 }

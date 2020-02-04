@@ -1,6 +1,7 @@
 import config from '../config'
 import * as types from '../actionTypes'
 
+//NEED TO ADD ERROR HANDLING
 const PlansActions = {
   getPlans() {
     return dispatch => {
@@ -24,7 +25,25 @@ const PlansActions = {
             payload: periods,
             planid: 1
           })
+        })  
+    }
+  },
+  createPlan({ name, description }) {
+    return dispatch => {
+      return fetch(`${config.api.host}/plans`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, description })
         })
+        .then(res => res.json())
+        .then(plan => {
+          return dispatch({
+            type: types.PLAN_CREATED,
+            payload: plan
+          })
+        })  
     }
   }
 }

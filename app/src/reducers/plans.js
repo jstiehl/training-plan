@@ -19,6 +19,11 @@ const plans = (state = initialState, action) => {
           [action.planid]: action.payload
         }
       }
+    case types.PLAN_CREATED:
+      return{
+        ...state,
+        plans: [...state.plans, action.payload]
+      }
     default:
       return state
   }
