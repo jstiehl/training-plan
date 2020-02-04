@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Route, useHistory, Link } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { PlansList, PeriodsList } from './PlansList'
@@ -80,15 +80,29 @@ const CreateNewPlan = () => {
 }
 
 const PlanView = ({ plan }) => {
-  let history = useHistory()
+  const dispatch = useDispatch()
   const [planPeriodName, setPlanPeriodName] = useState('')
   const [planPeriodDuration, setPlanPeriodDuration] = useState('')
-  useFetching(PlansActions.getPlanPeriods)
+  useFetching(PlansActions.getPlanPeriods.bind(null,plan.id))
   const periods = useSelector(state => state.plans.periods)
+
+  const handleCreate = e => {
+    e.preventDefault()
+    return dispatch(PlansActions.createPeriod({
+      name: planPeriodName,
+      duration: planPeriodDuration,
+      planid: plan.id
+    }))
+    .then(() => {
+      setPlanPeriodName('')
+      setPlanPeriodDuration('')
+    })
+  }
 
   if(!plan) {
     return null
   }
+
   return (
     <div className='plan-periods'>
       <div className="section-title">
@@ -108,7 +122,7 @@ const PlanView = ({ plan }) => {
           placeholder='Enter Plan Period Duration in Weeks' 
           value={planPeriodDuration}/>
       </div>
-      <button onClick={() => history.push('/plans/1')}>Create Period</button>
+      <button onClick={handleCreate}>Create Period</button>
     </div>
   )
 }

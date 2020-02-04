@@ -15,7 +15,7 @@ const options = [
 ];
 
 const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {
-  useFetching(PlansActions.getPlanPeriods)
+  useFetching(PlansActions.getPlanPeriods.bind(null, planid))
   const periods = useSelector(state => state.plans.periods)
   const period = (periods[planid] && periods[planid].find(p => p.id === parseInt(periodid))) || {}
   let dayCards = DAYS_OF_THE_WEEK.map(day => {

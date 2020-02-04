@@ -15,15 +15,15 @@ const PlansActions = {
         })
     }
   },
-  getPlanPeriods() {
+  getPlanPeriods(planid) {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/1/periods`)
+      return fetch(`${config.api.host}/plans/${planid}/periods`)
         .then(res => res.json())
         .then(periods => {
           return dispatch({
             type: types.PLAN_PERIODS_RECEIVED,
             payload: periods,
-            planid: 1
+            planid: planid
           })
         })  
     }
@@ -42,6 +42,25 @@ const PlansActions = {
           return dispatch({
             type: types.PLAN_CREATED,
             payload: plan
+          })
+        })  
+    }
+  },
+  createPeriod({ name, duration, planid }) {
+    return dispatch => {
+      return fetch(`${config.api.host}/plans/${planid}/periods`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, duration })
+        })
+        .then(res => res.json())
+        .then(period => {
+          return dispatch({
+            type: types.PLAN_PERIOD_CREATED,
+            payload: period,
+            planid
           })
         })  
     }

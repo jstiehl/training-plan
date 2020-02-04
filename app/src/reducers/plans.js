@@ -20,9 +20,19 @@ const plans = (state = initialState, action) => {
         }
       }
     case types.PLAN_CREATED:
-      return{
+      return {
         ...state,
         plans: [...state.plans, action.payload]
+      }
+    case types.PLAN_PERIOD_CREATED:
+      let currentPeriods = (state.periods && state.periods[action.planid]) || []
+      const newPeriods = [...currentPeriods, action.payload]
+      return {
+        ...state,
+        periods: {
+          ...state.periods,
+          [action.planid]: newPeriods
+        }
       }
     default:
       return state
