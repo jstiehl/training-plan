@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react'
 import { Route, Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import PropTypes from 'prop-types'
-import { PlansList, PeriodsList } from './PlansList'
+import { PlansList, PeriodsList } from './Lists'
 import WeeklyPlan from './WeeklyPlan'
 import { useFetching } from '../libs/hooks'
 import PlansActions from '../actions/plans'
@@ -19,7 +19,8 @@ const Plans = ({plans}) => {
         exact
         render={props => {
           const { match: { params: { id }}} = props
-          return <PlanView plan={plans.find(plan => plan.id === parseInt(id))}/>
+          const plan = plans.find(plan => plan.id === parseInt(id))
+          return plan ? <PlanView plan={plan}/> : null
         }}/>
       <Route 
         path="/plans/:id/periods/:pid"
@@ -80,11 +81,11 @@ const CreateNewPlan = () => {
 }
 
 const PlanView = ({ plan }) => {
-  const dispatch = useDispatch()
   const [planPeriodName, setPlanPeriodName] = useState('')
   const [planPeriodDuration, setPlanPeriodDuration] = useState('')
   useFetching(PlansActions.getPlanPeriods.bind(null,plan.id))
-  const periods = useSelector(state => state.plans.periods)
+  const periods = useSelector(state => state.plans.periods, shallowEqual)
+  const dispatch = useDispatch()
 
   const handleCreate = e => {
     e.preventDefault()

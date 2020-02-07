@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Select from 'react-select'
 import { useFetching } from '../libs/hooks'
 import PlansActions from '../actions/plans'
@@ -19,7 +19,7 @@ const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {
   const periods = useSelector(state => state.plans.periods)
   const period = (periods[planid] && periods[planid].find(p => p.id === parseInt(periodid))) || {}
   let dayCards = DAYS_OF_THE_WEEK.map(day => {
-    return <DayCard day={day} key={day}/>
+    return <DayCard plan={planid} period={periodid} day={day} key={day} workouts={period.weekly_plan || {}}/>
   })
 
   return (
@@ -41,6 +41,7 @@ export default WeeklyPlan
 const DayCard = props => {
   const [addAM, setAddAM] = useState(false)
   const [addPM, setAddPM] = useState(false)
+  const dispatch = useDispatch()
   const addWorkout = tod => e => {
     e.preventDefault()
     if(tod === 'AM') {
@@ -49,22 +50,47 @@ const DayCard = props => {
       setAddPM(true)
     }
   }
+  const saveWorkout = (dow,tod) => e => {
+    e.preventDefault()
+    return dispatch(PlansActions.updatePeriod({planid: props.plan, periodid: props.period, data: {
+      weekly_plan: {
+        [dow]: {
+          [tod]: {
+            type: "Zone 1",
+            description: "30 minutes on treadmill with 40lb weight vest"
+          }
+        }
+      }
+    }}))
+    .then(() => {
+      if(tod === 'AM') {
+        setAddAM(false)
+      } else {
+        setAddPM(false)
+      }
+    })
+  }
   return (
     <div className="day-card">
       <p className="day-title">{dayMap(props.day)}</p>
       <div className="workouts">
         <p>AM</p>
         <button className="add-button" onClick={addWorkout("AM")} disabled={addAM}/><label>Add Workout</label>
-        {addAM ? <WorkoutForm /> : null}
+        {addAM ? <WorkoutForm cancel={() => setAddAM(false)} save={saveWorkout(dayMap(props.day),'AM')}/> : null}
         <p>PM</p>
         <button className="add-button" onClick={addWorkout("PM")} disabled={addPM}/><label>Add Workout</label>
-        {addPM ? <WorkoutForm /> : null}
+        {addPM ? <WorkoutForm cancel={() => setAddPM(false)} save={saveWorkout(dayMap(props.day),'PM')}/> : null}
       </div>
     </div>
   )
 }
 
 const WorkoutForm = props => {
+  function cancel(e) {
+    e.preventDefault()
+    props.cancel()
+  }
+
   return (
     <div className="workout-form">
       <label>Workout Type</label><br />
@@ -74,6 +100,7 @@ const WorkoutForm = props => {
         options={options} />
       <label>Description</label><br />
       <input type="textarea" onChange={()=>{}} placeholder="Enter workout description" />
+      <button onClick={cancel}>Cancel</button><button onClick={props.save}>Save</button>
     </div>
   )
 }

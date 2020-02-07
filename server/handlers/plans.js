@@ -59,5 +59,36 @@ export default {
         //need to handle errors in server.js
         res.status(500).send(e)
       })
+  },
+  updatePeriodForPlan: (req, res) => {
+    const data = req.body
+    const { id: planid, pid: periodid } = req.params
+    if(!planid || !periodid) {
+      return res.status(500).send({message: "Required Values Missing for Updating Plan Period"})
+    }
+
+    const queryString = Object.keys(data)
+      .map((key, i) => {
+        return `${key}=$${i + 1}`
+      })
+      .join(',')
+    const queryValues = Object.keys(data).map(key => {
+      if (key === 'weekly_plan') {
+        return JSON.stringify(data[key])
+      }
+      return data[key]
+    })
+    queryValues.push(periodid)
+    return db
+      .query(`update training_plan_period set ${queryString} where id=$${queryValues.length} 
+        returning *`, queryValues
+      )
+      .then(([period]) => {
+        res.status(200).send(period)
+      })
+      .catch(e => {
+        //need to handle errors in server.js
+        res.status(500).send(e)
+      })
   }
 }

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 export const useFetching = someFetchActionCreator => {
   const dispatch = useDispatch()
-    useEffect(() => {
+  useEffect(() => {
     dispatch(someFetchActionCreator());
-  },[dispatch, someFetchActionCreator])
+  },[dispatch])
 }

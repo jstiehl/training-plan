@@ -14,14 +14,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: rgba(169,169,169,0.5);
   min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
@@ -36,8 +36,9 @@
 
 .main-navigation {
   flex: 1;
-  background-color: rgba(169,169,169,0.85);
+  background-color: rgba(169,169,169,0.15);
   height: 100vh;
+  color: white;
 }
 
 .main-routes {
@@ -50,10 +51,43 @@
   display: block;
   margin-top: 10px;
   min-width: 200px;
-  color: white;
+  color: black;
   text-decoration: none;
   &__active {
     text-decoration: underline;
+  }
+}
+
+.plan-list-item, .period-list-item {
+  &__header {
+    width: 50%;
+    margin: 0 auto;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgba(169,169,169,0.5);
+    border: 1px solid black;
+    border-bottom: none;
+    min-height: 25px;
+  }
+  width: 50%;
+  min-height: 50px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+
+  div:last-child {
+    flex: 1;
+  }
+
+  &__description {
+    text-align: left;
+    flex: 3;
   }
 }
 
@@ -112,6 +146,24 @@
     margin-top: 5px;
     margin-left: 5px;
     text-decoration: none;
+  }
+}
+
+.loader {
+  border: 4px solid white;
+  border-top: 4px solid grey;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }
 

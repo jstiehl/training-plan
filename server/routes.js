@@ -27,6 +27,12 @@ const routes = [
     url: '/plans/:id/periods',
     middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
     handler: plans.createPeriodForPlan,
+  },
+  {
+    method: 'put',
+    url: '/plans/:id/periods/:pid',
+    middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
+    handler: plans.updatePeriodForPlan,
   }
 ]
 
