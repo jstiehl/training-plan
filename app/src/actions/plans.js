@@ -46,6 +46,23 @@ const PlansActions = {
         })  
     }
   },
+  updatePlan({ planid }) {
+    return dispatch => {
+      return fetch(`${config.api.host}/plans/${planid}`, {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => res.json())
+        .then(plan => {
+          return dispatch({
+            type: types.PLAN_UPDATED,
+            payload: plan
+          })
+        })  
+    }
+  },
   createPeriod({ name, duration, planid }) {
     return dispatch => {
       return fetch(`${config.api.host}/plans/${planid}/periods`, {
@@ -81,6 +98,23 @@ const PlansActions = {
             payload: period,
             planid
           })
+        })  
+    }
+  },
+  deletePeriod({ planid, periodid }) {
+    return dispatch => {
+      return fetch(`${config.api.host}/plans/${planid}/periods/${periodid}`, {
+          method: "DELETE",
+        })
+        .then(res => res.json())
+        .then(({ success }) => {
+          if(success) {
+            return dispatch({
+              type: types.PLAN_PERIOD_DELETED,
+              periodid,
+              planid
+            })
+          }
         })  
     }
   }

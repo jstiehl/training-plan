@@ -24,6 +24,20 @@ const plans = (state = initialState, action) => {
         ...state,
         plans: [...state.plans, action.payload]
       }
+    case types.PLAN_UPDATED:
+      let updatedPlans = []
+      const updatedPlan = action.payload
+      state.plans.forEach(plan => {
+        if(plan.id === updatedPlan.id) {
+          updatedPlans.push({ ...plan, ...updatedPlan })
+        } else {
+          updatedPlans.push(plan)
+        }
+      })
+      return {
+        ...state,
+        plans: updatedPlans
+      }
     case types.PLAN_PERIOD_CREATED:
       let currentPeriods = (state.periods && state.periods[action.planid]) || []
       const newPeriods = [...currentPeriods, action.payload]
@@ -32,6 +46,17 @@ const plans = (state = initialState, action) => {
         periods: {
           ...state.periods,
           [action.planid]: newPeriods
+        }
+      }
+    case types.PLAN_PERIOD_DELETED:
+      let periodsBeforeDelete = (state.periods && state.periods[action.planid]) || []
+      const periodsAfterDelete = periodsBeforeDelete.filter(period => period.id !== action.periodid && period.planid === action.planid)
+
+      return {
+        ...state,
+        periods: {
+          ...state.periods,
+          [action.planid]: periodsAfterDelete
         }
       }
     default:

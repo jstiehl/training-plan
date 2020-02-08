@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Select from 'react-select'
@@ -39,6 +39,7 @@ const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {
 export default WeeklyPlan
 
 const DayCard = props => {
+  const dailyWorkouts = props.workouts[dayMap(props.day)]
   const [addAM, setAddAM] = useState(false)
   const [addPM, setAddPM] = useState(false)
   const dispatch = useDispatch()
@@ -50,14 +51,17 @@ const DayCard = props => {
       setAddPM(true)
     }
   }
-  const saveWorkout = (dow,tod) => e => {
-    e.preventDefault()
+  const saveWorkout = (dow,tod) => (type, description) => {
     return dispatch(PlansActions.updatePeriod({planid: props.plan, periodid: props.period, data: {
       weekly_plan: {
+        ...props.workouts,
         [dow]: {
-          [tod]: {
-            type: "Zone 1",
-            description: "30 minutes on treadmill with 40lb weight vest"
+          ...props.workouts[dow],
+          ...{
+            [tod]: {
+              type: type,
+              description
+            }
           }
         }
       }
@@ -75,32 +79,74 @@ const DayCard = props => {
       <p className="day-title">{dayMap(props.day)}</p>
       <div className="workouts">
         <p>AM</p>
-        <button className="add-button" onClick={addWorkout("AM")} disabled={addAM}/><label>Add Workout</label>
-        {addAM ? <WorkoutForm cancel={() => setAddAM(false)} save={saveWorkout(dayMap(props.day),'AM')}/> : null}
+        <button className="add-button" onClick={addWorkout("AM")} disabled={addAM}/><label>{dailyWorkouts && dailyWorkouts['AM'] ? "Edit Workout" : "Add Workout"}</label>
+        {addAM ? 
+          <WorkoutForm 
+            workout={dailyWorkouts && dailyWorkouts['AM']} 
+            cancel={() => setAddAM(false)} 
+            save={saveWorkout(dayMap(props.day),'AM')}/> : 
+            (dailyWorkouts && dailyWorkouts['AM']) ? 
+            <WorkoutForm 
+              workout={dailyWorkouts && dailyWorkouts['AM']} 
+              cancel={() => setAddAM(false)} 
+              save={saveWorkout(dayMap(props.day),'AM')}
+              readOnly/> : null}
         <p>PM</p>
-        <button className="add-button" onClick={addWorkout("PM")} disabled={addPM}/><label>Add Workout</label>
-        {addPM ? <WorkoutForm cancel={() => setAddPM(false)} save={saveWorkout(dayMap(props.day),'PM')}/> : null}
+        <button className="add-button" onClick={addWorkout("PM")} disabled={addPM}/><label>{dailyWorkouts && dailyWorkouts['PM'] ? "Edit Workout" : "Add Workout"}</label>
+        {addPM ? <WorkoutForm 
+            workout={dailyWorkouts && dailyWorkouts['PM']} 
+            cancel={() => setAddPM(false)} 
+            save={saveWorkout(dayMap(props.day),'PM')}/> : 
+            (dailyWorkouts && dailyWorkouts['PM']) ? 
+            <WorkoutForm 
+              workout={dailyWorkouts && dailyWorkouts['PM']} 
+              cancel={() => setAddPM(false)} 
+              save={saveWorkout(dayMap(props.day),'PM')}
+              readOnly/> : null}
       </div>
     </div>
   )
 }
 
 const WorkoutForm = props => {
+  const [type, setType] = useState()
+  const [description, setDescription] = useState('')
+  useEffect(() => {
+    if(props.workout) {
+      setType(props.workout.type)
+      setDescription(props.workout.description)
+    }
+  }, [props.workout])
+
   function cancel(e) {
     e.preventDefault()
     props.cancel()
+  }
+
+  function handleDescription(e) {
+    setDescription(e.target.value)
+  }
+
+  function handleType(e) {
+    setType(e)
+  }
+
+  function saveWorkout(e) {
+    e.preventDefault()
+    return props.save(type, description)
   }
 
   return (
     <div className="workout-form">
       <label>Workout Type</label><br />
       <Select
-        value={undefined}
-        onChange={()=>{}}
-        options={options} />
+        value={type}
+        onChange={handleType}
+        options={options} 
+        isDisabled={!!props.readOnly}/>
       <label>Description</label><br />
-      <input type="textarea" onChange={()=>{}} placeholder="Enter workout description" />
-      <button onClick={cancel}>Cancel</button><button onClick={props.save}>Save</button>
+      <textarea rows="5" cols="40" value={description} onChange={handleDescription} placeholder="Enter workout description" disabled={!!props.readOnly}/><br />
+      {!props.readOnly ? <><button onClick={cancel}>Cancel</button><button onClick={saveWorkout}>Save</button></>: null}
     </div>
   )
 }

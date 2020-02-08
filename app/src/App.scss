@@ -73,21 +73,21 @@
   width: 50%;
   min-height: 50px;
   margin: 0 auto;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border: 1px solid black;
-
-  div:last-child {
+  box-shadow: 5px 5px 10px #888888;
+  &__item {
     flex: 1;
   }
 
   &__description {
     text-align: left;
-    flex: 3;
+    flex: 4;
   }
 }
 

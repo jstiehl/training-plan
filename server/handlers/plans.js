@@ -28,6 +28,22 @@ export default {
         res.status(500).send(e)
       })
   },
+  updatePlan: (req,res) => {
+    //update is just for setting plan to ative for now
+    const { id: planid } = req.params
+    if(!planid) {
+      return res.status(500).send({message: "No Plan ID Specified"})
+    }
+    return db
+      .query('update training_plan set active=True where id=$1 returning *', [planid])
+      .then(([plan]) => {
+        res.status(200).send(plan)
+      })
+      .catch(e => {
+        //need to handle errors in server.js
+        res.status(500).send(e)
+      })
+  },
   getPeriodsForPlan: (req, res) => {
     const planid = req.params.id
     if(!planid) {
@@ -85,6 +101,22 @@ export default {
       )
       .then(([period]) => {
         res.status(200).send(period)
+      })
+      .catch(e => {
+        //need to handle errors in server.js
+        res.status(500).send(e)
+      })
+  },
+  deletePeriodForPlan: (req, res) => {
+    const { id: planid, pid: periodid } = req.params
+    if(!planid || !periodid) {
+      return res.status(500).send({message: "Required Values Missing for Deleting Plan Period"})
+    }
+
+    return db
+      .query(`delete from training_plan_period where id=$1 and planid=$2`, [periodid, planid])
+      .then(() => {
+        res.status(200).send({success: true}) //success
       })
       .catch(e => {
         //need to handle errors in server.js

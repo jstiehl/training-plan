@@ -17,6 +17,12 @@ const routes = [
     handler: plans.createPlan,
   },
   {
+    method: 'put',
+    url: '/plans/:id',
+    middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
+    handler: plans.updatePlan,
+  },
+  {
     method: 'get',
     url: '/plans/:id/periods',
     middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
@@ -33,6 +39,12 @@ const routes = [
     url: '/plans/:id/periods/:pid',
     middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
     handler: plans.updatePeriodForPlan,
+  },
+  {
+    method: 'delete',
+    url: '/plans/:id/periods/:pid',
+    middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
+    handler: plans.deletePeriodForPlan,
   }
 ]
 
