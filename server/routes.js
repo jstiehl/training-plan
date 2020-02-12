@@ -11,6 +11,12 @@ const routes = [
     handler: plans.getPlans,
   },
   {
+    method: 'get',
+    url: '/plans/active',
+    middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
+    handler: plans.getActivePlan,
+  },
+  {
     method: 'post',
     url: '/plans',
     middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint

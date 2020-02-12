@@ -15,6 +15,23 @@ export default {
         res.status(500).send(e)
       })
   },
+  getActivePlan: (req, res) => {
+    //i need to get user id from somewhere?
+    const userid = (req.user && req.user.id) || 1
+    return db
+      .oneOrNone('select * from training_plan where userid = $1 and active=True', [userid])
+      .then(plan => {
+        return db
+          .query('select * from training_plan_period where planid=$1', [plan.id])
+          .then(periods => {
+            res.status(200).send({ plan, periods })
+          })
+      })
+      .catch(e => {
+        //need to handle errors in server.js
+        res.status(500).send(e)
+      })
+  },
   createPlan: (req, res) => {
     const { name, description } = req.body
     const userid = (req.user && req.user.id) || 1
