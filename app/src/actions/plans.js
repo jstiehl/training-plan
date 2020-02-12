@@ -3,6 +3,18 @@ import * as types from '../actionTypes'
 
 //NEED TO ADD ERROR HANDLING
 const PlansActions = {
+  getActivePlan() {
+    return dispatch => {
+      return fetch(`${config.api.host}/plans/active`)
+        .then(res => res.json())
+        .then(plans => {
+          return dispatch({
+            type: types.PLANS_RECEIVED,
+            payload: plans
+          })
+        })
+    }
+  },
   getPlans() {
     return dispatch => {
       return fetch(`${config.api.host}/plans`)

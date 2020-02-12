@@ -3,13 +3,10 @@ package handlers
 import (
   "fmt"
   "net/http"
-  "time"
   "encoding/json"
   "training/auth/db"
   "github.com/gorilla/mux"
-  "database/sql"
   "strconv"
-  jwt "github.com/dgrijalva/jwt-go"
 )
 
 type User struct {
@@ -24,71 +21,6 @@ type TrainingUser struct {
   Id int`json:"id"`
   UserName string `json:"username"`
   Email string `json:"email"`
-}
-
-type Claim struct {
-  User
-  jwt.StandardClaims
-}
-
-type Token struct {
-  Token string `json:"token"`
-  Expires int64 `json:"expires"`
-}
-
-type Tokens struct {
-  Access Token `json:"accessToken"`
-  Refresh Token `json:"refreshToken"`
-}
-
-func LoginHandler(w http.ResponseWriter, r * http.Request) {
-  fmt.Println("Login Handler")
-  var user User
-  var userRecord User
-  var id int 
-  var username, email, last_name, first_name string
-  dec := json.NewDecoder(r.Body)
-  jsonerr := dec.Decode(&user)
-  if jsonerr != nil {
-    panic(jsonerr)
-  }
-  sqlStatement := db.GetUser
-  row := db.DBCon.QueryRow(sqlStatement, user.Email)
-
-  switch err := row.Scan(&id, &username, &email, &last_name, &first_name); err {
-    case sql.ErrNoRows:
-      fmt.Println("No rows were returned!")
-    case nil:
-      userRecord.Id=id
-      userRecord.UserName = username
-      userRecord.Email = email
-      userRecord.LastName = last_name
-      userRecord.FirstName = first_name
-    default:
-      panic(err)
-  }
-
-  access_token := jwt.NewWithClaims(jwt.SigningMethodHS256, Claim{
-    userRecord,
-    jwt.StandardClaims{
-      ExpiresAt: time.Now().Unix() + 3600*1000,
-    },
-  })
-  mySigningKey := []byte("Dozo6da2aiphoh0QuahKujee1Osei0is5abeefeeguy0RoJai9Leet2ai9ahkotu")
-  accessTokenString, err := access_token.SignedString(mySigningKey)
-
-  refresh_token := jwt.NewWithClaims(jwt.SigningMethodHS256, Claim{
-    userRecord,
-    jwt.StandardClaims{
-      ExpiresAt: time.Now().Unix() + 3600*1000*24,
-    },
-  })
-  refreshTokenString, err := refresh_token.SignedString(mySigningKey)
-
-  if err != nil {
-    panic(err)
-  }
-  json.NewEncoder(w).Encode(Tokens{Token{accessTokenString, time.Now().Unix() + 3600*1000,}, Token{refreshTokenString, time.Now().Unix() + 3600*1000*24,}})
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
