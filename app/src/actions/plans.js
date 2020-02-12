@@ -7,10 +7,10 @@ const PlansActions = {
     return dispatch => {
       return fetch(`${config.api.host}/plans/active`)
         .then(res => res.json())
-        .then(plans => {
+        .then(plan => {
           return dispatch({
-            type: types.PLANS_RECEIVED,
-            payload: plans
+            type: types.ACTIVE_PLAN_RECEIVED,
+            payload: plan
           })
         })
     }

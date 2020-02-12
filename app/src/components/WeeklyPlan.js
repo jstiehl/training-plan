@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Select from 'react-select'
 import { useFetching } from '../libs/hooks'
+import { dayMap } from '../libs/utils'
 import PlansActions from '../actions/plans'
 
 const DAYS_OF_THE_WEEK = [1,2,3,4,5,6,0]
@@ -146,30 +147,11 @@ const WorkoutForm = props => {
         isDisabled={!!props.readOnly}/>
       <label>Description</label><br />
       <textarea rows="5" cols="40" value={description} onChange={handleDescription} placeholder="Enter workout description" disabled={!!props.readOnly}/><br />
-      {!props.readOnly ? <><button onClick={cancel}>Cancel</button><button onClick={saveWorkout}>Save</button></>: null}
+      {!props.readOnly ? <Fragment><button onClick={cancel}>Cancel</button><button onClick={saveWorkout}>Save</button></Fragment>: null}
     </div>
   )
 }
 
-const dayMap = day => {
-  switch(day) {
-    case 1: 
-      return "Monday"
-    case 2: 
-      return "Tuesday"
-    case 3: 
-      return "Wednesday"
-    case 4: 
-      return "Thursday"
-    case 5: 
-      return "Friday"
-    case 6: 
-      return "Saturday"
-    case 0:
-    default:
-      return "Sunday"
-  }
-}
 
 /*
 for day, using day designations for JS getDay()

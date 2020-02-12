@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import About from './components/About'
 import PlansContainer from './containers/PlansContainer'
-import Home from './components/Home'
+import HomeContainer from './containers/HomeContainer'
 
 export default ({ authed }) => (
   <Switch>
@@ -13,7 +13,7 @@ export default ({ authed }) => (
       <PlansContainer />
     </Route>
     <Route path="/">
-      <Home />
+      <HomeContainer />
     </Route>
   </Switch>
 )

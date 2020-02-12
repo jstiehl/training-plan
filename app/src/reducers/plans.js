@@ -6,6 +6,11 @@ const initialState = {
 
 const plans = (state = initialState, action) => {
   switch(action.type) {
+    case types.ACTIVE_PLAN_RECEIVED:
+      return {
+        ...state,
+        activePlan: action.payload
+      }
     case types.PLANS_RECEIVED:
       return {
         ...state,
