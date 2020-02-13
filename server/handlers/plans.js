@@ -6,7 +6,7 @@ export default {
     //i need to get user id from somewhere?
     const userid = (req.user && req.user.id) || 1
     return db
-      .query('select * from training_plan where userid = $1 order by created_date', [userid])
+      .query('select * from training_plan where userid = $1 and deleted=False order by created_date', [userid])
       .then(plans => {
         res.status(200).send(plans)
       })
@@ -19,7 +19,7 @@ export default {
     //i need to get user id from somewhere?
     const userid = (req.user && req.user.id) || 1
     return db
-      .oneOrNone('select * from training_plan where userid = $1 and active=True', [userid])
+      .oneOrNone('select * from training_plan where userid = $1 and active=True and deleted=False', [userid])
       .then(plan => {
         return db
           .query('select * from training_plan_period where planid=$1 order by created_date', [plan.id])
@@ -39,6 +39,22 @@ export default {
       .query('insert into training_plan(name, description, userid) values ($1,$2,$3) returning *', [name, description, userid])
       .then(([plan]) => {
         res.status(200).send(plan)
+      })
+      .catch(e => {
+        //need to handle errors in server.js
+        res.status(500).send(e)
+      })
+  },
+  deletePlan: (req, res) => {
+    //update is just for setting plan to ative for now
+    const { id: planid } = req.params
+    if(!planid) {
+      return res.status(500).send({message: "No Plan ID Specified"})
+    }
+    return db
+      .query('update training_plan set deleted=True where id=$1', [planid])
+      .then(() => {
+        res.status(200).send({deleted: true})
       })
       .catch(e => {
         //need to handle errors in server.js

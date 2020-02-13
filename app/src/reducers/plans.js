@@ -29,6 +29,12 @@ const plans = (state = initialState, action) => {
         ...state,
         plans: [...state.plans, action.payload]
       }
+    case types.PLAN_DELETED:
+      let plansAfterDelete = [...state.plans].filter(plan => plan.id !== action.planid)
+      return {
+        ...state,
+        plans: plansAfterDelete
+      }
     case types.PLAN_UPDATED:
       let updatedPlans = []
       const updatedPlan = action.payload

@@ -49,6 +49,20 @@ const PlansActions = {
         })  
     }
   },
+  deletePlan({ planid }) {
+    return dispatch => {
+      return request(`${config.api.host}/plans/${planid}`, {
+          method: "DELETE",
+          auth: true
+        })
+        .then(plan => {
+          return dispatch({
+            type: types.PLAN_DELETED,
+            planid
+          })
+        })  
+    }
+  },
   updatePlan({ planid }) {
     return dispatch => {
       return request(`${config.api.host}/plans/${planid}`, {

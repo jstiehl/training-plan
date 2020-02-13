@@ -29,6 +29,12 @@ const routes = [
     handler: plans.updatePlan,
   },
   {
+    method: 'delete',
+    url: '/plans/:id',
+    middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint
+    handler: plans.deletePlan,
+  },
+  {
     method: 'get',
     url: '/plans/:id/periods',
     middleware: [auth.userStatus], //need to add auth for this. should only be an admin endpoint

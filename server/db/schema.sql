@@ -25,6 +25,7 @@ create table training_plan(
   name text not null,
   description text,
   active boolean default FALSE not null,
+  deleted boolean default FALSE not null,
   started_date TIMESTAMP(0),
   created_date TIMESTAMP(0) default current_timestamp(0) not null
 );

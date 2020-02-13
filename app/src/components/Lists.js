@@ -32,6 +32,10 @@ const PlanListItem = plan => {
     e.preventDefault()
     dispatch(PlansActions.updatePlan({ planid:id }))
   }
+  function deletePlan(id, e) {
+    e.preventDefault()
+    dispatch(PlansActions.deletePlan({ planid:id }))
+  }
   return (
     <div>
       <div className="plan-list-item__header">{plan.name}</div>
@@ -39,7 +43,7 @@ const PlanListItem = plan => {
         <div className="plan-list-item__description">{plan.description}</div>
         <div className="plan-list-item__item">{plan.active ? "Active" : "Inactive"}</div>
         <div className="plan-list-item__item">{<Link to={`/plans/${plan.id}`}>Edit</Link>}</div>
-        <div className="plan-list-item__item"><button>Delete</button></div>
+        <div className="plan-list-item__item"><button onClick={deletePlan.bind(null, plan.id)} disabled={plan.active}>Delete</button></div>
         <div className="plan-list-item__item"><button onClick={setActive.bind(null, plan.id)} disabled={plan.active}>Set Active</button></div>
       </div>
     </div>
