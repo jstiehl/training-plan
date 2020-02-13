@@ -17,3 +17,27 @@ export const dayMap = day => {
       return "Sunday"
   }
 }
+
+export const getAccessToken = () => {
+  let token
+  try {
+    token = JSON.parse(window.localStorage.getItem('tpaccess'))
+  } catch (e) {
+    console.log("no token available")
+    throw(e)
+  }
+
+  return token
+}
+
+export const getRefreshToken = () => {
+  let token
+  try {
+    token = JSON.parse(window.localStorage.getItem('tprefresh'))
+  } catch (e) {
+    console.log("no refresh token available")
+    throw(e)
+  }
+
+  return token
+}

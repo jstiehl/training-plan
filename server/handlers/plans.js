@@ -6,7 +6,7 @@ export default {
     //i need to get user id from somewhere?
     const userid = (req.user && req.user.id) || 1
     return db
-      .query('select * from training_plan where userid = $1', [userid])
+      .query('select * from training_plan where userid = $1 order by created_date', [userid])
       .then(plans => {
         res.status(200).send(plans)
       })
@@ -22,7 +22,7 @@ export default {
       .oneOrNone('select * from training_plan where userid = $1 and active=True', [userid])
       .then(plan => {
         return db
-          .query('select * from training_plan_period where planid=$1', [plan.id])
+          .query('select * from training_plan_period where planid=$1 order by created_date', [plan.id])
           .then(periods => {
             res.status(200).send({ plan, periods })
           })
@@ -68,7 +68,7 @@ export default {
     }
 
     return db
-      .query('select * from training_plan_period where planid = $1', [planid])
+      .query('select * from training_plan_period where planid = $1 order by created_date', [planid])
       .then(periods => {
         res.status(200).send(periods)
       })

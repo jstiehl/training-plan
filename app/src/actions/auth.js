@@ -1,17 +1,13 @@
 import config from '../config'
 import * as types from '../actionTypes'
+import request from '../libs/request'
 
 const AuthActions = {
   login(email) {
     return dispatch => {
-      return fetch(`${config.auth.host}/login`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email })
-        })
-        .then(res => res.json())
+      return request(`${config.auth.host}/login`, {
+          method: "POST"
+        }, { email })
         .then(tokens => {
           window.localStorage.setItem("tpaccess", JSON.stringify(tokens.accessToken))
           window.localStorage.setItem("tprefresh", JSON.stringify(tokens.refreshToken))
@@ -32,14 +28,9 @@ const AuthActions = {
       return AuthActions.logout()
     }
     return dispatch => {
-      return fetch(`${config.auth.host}/refresh`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ token: refreshToken })
-        })
-        .then(res => res.json())
+      return request(`${config.auth.host}/refresh`, {
+          method: "POST"
+        }, { token: refreshToken })
         .then(tokens => {
           window.localStorage.setItem("tpaccess", JSON.stringify(tokens.accessToken))
           window.localStorage.setItem("tprefresh", JSON.stringify(tokens.refreshToken))

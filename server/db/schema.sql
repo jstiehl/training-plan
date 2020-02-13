@@ -38,3 +38,12 @@ create table training_plan_period(
   weekly_plan jsonb null,
   created_date TIMESTAMP(0) default current_timestamp(0) not null
 );
+
+drop table if exists training_logs cascade;
+create table training_logs(
+  periodid int references training_plan_period(id)
+  workout_day text not null,
+  workout_tod text not null,
+  workout_date TIMESTAMP(0) default current_timestamp(0) not null,
+  workout_details jsonb null
+);

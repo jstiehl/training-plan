@@ -40,7 +40,7 @@ const DefaultPlansView = ({ plans }) => {
   const [newPlan, setNewPlan] = useState(false)
   return (
     <div>
-      <h3>Plans</h3>
+      <h1>Plans</h1>
       {newPlan ?  <CreateNewPlan />: <button onClick={()=> setNewPlan(true)}>Create New Plan</button>}
       <PlansList plans={plans}/>
     </div>

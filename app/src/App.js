@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
@@ -11,15 +11,21 @@ import AuthActions from './actions/auth'
 const history = createBrowserHistory()
 
 function App() {
+  const [auth, setAuth] = useState(false)
   const dispatch = useDispatch()
   useEffect(() => {
     const accessToken = window.localStorage.getItem('tpaccess')
     if(!accessToken) {
-      dispatch(AuthActions.login("jstiehl@gmail.com"))
+      return dispatch(AuthActions.login("jstiehl@gmail.com"))
+        .then(() => {
+          setAuth(true)
+        })
+    } else {
+      setAuth(true)
     }
-  }, [dispatch])
+  }, [dispatch, auth])
 
-  return (
+  return auth ? (
     <Router history={history}>
       <div className="App">
         <header className="App-header">
@@ -35,7 +41,7 @@ function App() {
         </div>
       </div>
     </Router>
-  );
+  ) : "Loading"
 }
 
 export default App;

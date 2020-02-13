@@ -3,7 +3,6 @@ import { dayMap } from '../libs/utils'
 
 const Home = ({ plan }) => {
   if(!plan) return null
-  console.log(plan)
   const today = dayMap(new Date().getDay())
   const period = plan.periods.find(p => p.id === 5)
   const todaysWorkouts = period.weekly_plan[today]

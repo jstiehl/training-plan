@@ -1,12 +1,12 @@
 import config from '../config'
 import * as types from '../actionTypes'
+import request from '../libs/request'
 
 //NEED TO ADD ERROR HANDLING
 const PlansActions = {
   getActivePlan() {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/active`)
-        .then(res => res.json())
+      return request(`${config.api.host}/plans/active`, {auth:true})
         .then(plan => {
           return dispatch({
             type: types.ACTIVE_PLAN_RECEIVED,
@@ -17,8 +17,7 @@ const PlansActions = {
   },
   getPlans() {
     return dispatch => {
-      return fetch(`${config.api.host}/plans`)
-        .then(res => res.json())
+      return request(`${config.api.host}/plans`, { auth: true })
         .then(plans => {
           return dispatch({
             type: types.PLANS_RECEIVED,
@@ -29,8 +28,7 @@ const PlansActions = {
   },
   getPlanPeriods: planid => {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/${planid}/periods`)
-        .then(res => res.json())
+      return request(`${config.api.host}/plans/${planid}/periods`, { auth: true })
         .then(periods => {
           return dispatch({
             type: types.PLAN_PERIODS_RECEIVED,
@@ -42,14 +40,7 @@ const PlansActions = {
   },
   createPlan({ name, description }) {
     return dispatch => {
-      return fetch(`${config.api.host}/plans`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, description })
-        })
-        .then(res => res.json())
+      return request(`${config.api.host}/plans`, { method: "POST", auth: true }, { name, description })
         .then(plan => {
           return dispatch({
             type: types.PLAN_CREATED,
@@ -60,13 +51,10 @@ const PlansActions = {
   },
   updatePlan({ planid }) {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/${planid}`, {
+      return request(`${config.api.host}/plans/${planid}`, {
           method: "PUT",
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          auth: true
         })
-        .then(res => res.json())
         .then(plan => {
           return dispatch({
             type: types.PLAN_UPDATED,
@@ -79,12 +67,8 @@ const PlansActions = {
     return dispatch => {
       return fetch(`${config.api.host}/plans/${planid}/periods`, {
           method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, duration })
-        })
-        .then(res => res.json())
+          auth: true
+        }, { name, duration })
         .then(period => {
           return dispatch({
             type: types.PLAN_PERIOD_CREATED,
@@ -96,14 +80,10 @@ const PlansActions = {
   },
   updatePeriod({ planid, periodid, data }) {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/${planid}/periods/${periodid}`, {
+      return request(`${config.api.host}/plans/${planid}/periods/${periodid}`, {
           method: "PUT",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        })
-        .then(res => res.json())
+          auth: true
+        }, data)
         .then(period => {
           return dispatch({
             type: types.PLAN_PERIOD_CREATED,
@@ -115,10 +95,10 @@ const PlansActions = {
   },
   deletePeriod({ planid, periodid }) {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/${planid}/periods/${periodid}`, {
+      return request(`${config.api.host}/plans/${planid}/periods/${periodid}`, {
           method: "DELETE",
+          auth: true
         })
-        .then(res => res.json())
         .then(({ success }) => {
           if(success) {
             return dispatch({
