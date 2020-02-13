@@ -8,6 +8,26 @@
   pointer-events: none;
 }
 
+.app-logo {
+  width: 80px;
+  height: 80px;
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+
+.workout-image {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -19,9 +39,9 @@
   border-bottom: 1px solid grey;
   min-height: 10vh;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: black;
   padding-left: 1.5rem;
@@ -117,6 +137,21 @@
     .day-title {
       border-bottom: 1px solid black;
     }
+  }
+}
+
+.workout-card {
+  width: 50%;
+  border: 1px solid grey;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 0 auto;
+  .tod-workout {
+    text-align: center;
+  }
+  .workout-title {
+    font-size: 24px;
+    font-weight: bold;
   }
 }
 

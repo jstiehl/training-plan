@@ -41,3 +41,13 @@ export const getRefreshToken = () => {
 
   return token
 }
+
+export const deleteTokens = () => {
+  window.localStorage.removeItem("tpaccess")
+  window.localStorage.removeItem("tprefresh")
+}
+
+export const setTokens = tokens => {
+  window.localStorage.setItem("tpaccess", JSON.stringify(tokens.accessToken))
+  window.localStorage.setItem("tprefresh", JSON.stringify(tokens.refreshToken))
+}

@@ -1,5 +1,10 @@
 import React from 'react'
 import { dayMap } from '../libs/utils'
+import Img from 'react-image'
+import Zone1Logo from '../assets/zone1.png'
+import Zone2Logo from '../assets/zone2.png'
+import Zone3Logo from '../assets/zone3.png'
+import StrengthLogo from '../assets/strength.png'
 
 const Home = ({ plan }) => {
   if(!plan) return null
@@ -22,14 +27,35 @@ const TodaysWorkouts = ({ workouts, today }) => {
     return <div>No Workouts Scheduled Today</div>
   }
   return (
-    <div className="day-card">
-      <p className="day-title">{today}</p>
+    <div className="workout-card">
+      <p className="workout-title">{today}</p>
       <div className="workouts">
-        <p>AM</p>
-        <p>{workouts['AM'] ? `${workouts['AM'].type.label} : ${workouts['AM'].description}`: 'No Morning Workout Today!'}</p>
-        <p>PM</p>
-        <p>{workouts['PM'] ? `${workouts['PM'].type.label} : ${workouts['PM'].description}`: 'No Evening Workout Today!'}</p>
+        <h3>Morning Workout</h3>
+        <div className="tod-workout">
+          {workouts['AM'] ? <span className="workout-image"><Img src={WorkoutImage(workouts['AM'].type.value)} /></span> : null}
+          <p>{workouts['AM'] ? `${workouts['AM'].type.label} : ${workouts['AM'].description}`: 'No Morning Workout Today!'}</p>
+        </div>
+        <h3>Evening Workout</h3>
+        <div className="tod-workout">
+          {workouts['PM'] ? <span className="workout-image"><Img src={WorkoutImage(workouts['PM'].type.value)} /></span> : null}
+          <p>{workouts['PM'] ? `${workouts['PM'].type.label} : ${workouts['PM'].description}`: 'No Evening Workout Today!'}</p>
+        </div>
       </div>
     </div>
   )
+}
+
+function WorkoutImage(type) {
+  switch(type) {
+    case 'zone1':
+      return Zone1Logo
+    case 'zone2':
+      return Zone2Logo
+    case 'zone3':
+      return Zone3Logo
+    case 'strength':
+      return StrengthLogo
+    default:
+      return Zone1Logo
+  }
 }

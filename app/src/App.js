@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
+import Img from 'react-image'
 import Routes from './Routes'
 import Nav from './components/Nav'
 import './App.scss';
+
+import logo from './assets/climb.png'
 
 import AuthActions from './actions/auth'
 
@@ -29,6 +32,7 @@ function App() {
     <Router history={history}>
       <div className="App">
         <header className="App-header">
+          <span className="app-logo"><Img src={logo} /></span>
           <h2>Training Plan</h2>
         </header>
         <div className="main-container">
