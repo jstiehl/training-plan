@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import Img from 'react-image'
 import PlansActions from '../actions/plans'
+
+import Edit from '../assets/edit.png'
+import Delete from '../assets/delete.png'
 
 export const PlansList = ({ plans }) => {
   const buildList = () => {
@@ -42,8 +46,8 @@ const PlanListItem = plan => {
       <div className="plan-list-item">
         <div className="plan-list-item__description">{plan.description}</div>
         <div className="plan-list-item__item">{plan.active ? "Active" : "Inactive"}</div>
-        <div className="plan-list-item__item">{<Link to={`/plans/${plan.id}`}>Edit</Link>}</div>
-        <div className="plan-list-item__item"><button onClick={deletePlan.bind(null, plan.id)} disabled={plan.active}>Delete</button></div>
+        <div className="plan-list-item__item">{<Link to={`/plans/${plan.id}`}><span className="edit-icon"><Img src={Edit} /></span></Link>}</div>
+        <div className="plan-list-item__item"><button onClick={deletePlan.bind(null, plan.id)} disabled={plan.active}><span className="delete-icon"><Img src={Delete} /></span></button></div>
         <div className="plan-list-item__item"><button onClick={setActive.bind(null, plan.id)} disabled={plan.active}>Set Active</button></div>
       </div>
     </div>
@@ -83,8 +87,8 @@ const PeriodListItem = period => {
       <div className="period-list-item__header">{period.name + ` - ${period.duration} Weeks`}</div>
       <div className="period-list-item">
         <div className="period-list-item__description">{period.description || "No description provided for this period"}</div>
-        <div className="plan-list-item__item">{<Link to={`/plans/${period.planid}/periods/${period.id}`}>Edit</Link>}</div>
-        <div className="plan-list-item__item" onClick={deletePeriod.bind(null, period.planid, period.id)}><button>Delete</button></div>
+        <div className="plan-list-item__item">{<Link to={`/plans/${period.planid}/periods/${period.id}`}><span className="edit-icon"><Img src={Edit} /></span></Link>}</div>
+        <div className="plan-list-item__item"><button onClick={deletePeriod.bind(null, period.planid, period.id)}><span className="delete-icon"><Img src={Delete} /></span></button></div>
       </div>
     </div>
   )

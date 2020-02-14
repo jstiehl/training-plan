@@ -28,6 +28,28 @@
   }
 }
 
+.edit-icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+
+.delete-icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -107,6 +129,10 @@
   box-shadow: 5px 5px 10px #888888;
   &__item {
     flex: 1;
+    button {
+      border: none;
+      background-color: none;
+    }
   }
 
   &__description {

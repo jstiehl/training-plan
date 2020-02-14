@@ -11,28 +11,10 @@ export default {
       return next()
     } catch(e) {
       let error = {
-        status: 403,
+        http_code: 403,
         message: 'Permission Denied',
       }
       return next(error)
     }
-
-    return db
-      .oneOrNone('select * from user_session where token=$1', [token])
-      .then(session => {
-        if (!session.token) {
-          throw new Error()
-          return
-        }
-        req.user = session.userid
-        next()
-      })
-      .catch(e => {
-        let error = {
-          status: 403,
-          message: 'Permission Denied',
-        }
-        next(error)
-      })
   }
 }
