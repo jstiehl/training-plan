@@ -21,6 +21,16 @@ const AuthActions = {
         })
     }
   },
+  verifyAuth() {
+    const accessToken = window.localStorage.getItem('tpaccess')
+    return dispatch => {
+      if(accessToken) {
+        return dispatch({
+          type: types.USER_AUTHED
+        })
+      }
+    }
+  },
   refreshToken() {
     const refreshToken = JSON.parse(window.localStorage.getItem('tprefresh'))
     if(!refreshToken) {

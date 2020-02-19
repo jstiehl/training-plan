@@ -8,13 +8,14 @@ import Edit from '../assets/edit.png'
 import Delete from '../assets/delete.png'
 
 export const PlansList = ({ plans }) => {
+  const activePlanExists = plans.find(plan => plan.active)
   const buildList = () => {
     if(!plans.length) {
       return <p>You have not created any plans yet!</p>
     }
 
     const plansList = plans.map((plan, i) => {
-      return <li key={i}>{PlanListItem(plan)}</li>
+      return <li key={i}>{PlanListItem(plan, activePlanExists)}</li>
     })
     return (
       <ul>
@@ -29,7 +30,7 @@ export const PlansList = ({ plans }) => {
   )
 }
 
-const PlanListItem = plan => {
+const PlanListItem = (plan, active) => {
   const dispatch = useDispatch()
 
   function setActive(id, e) {
@@ -47,8 +48,8 @@ const PlanListItem = plan => {
         <div className="plan-list-item__description">{plan.description}</div>
         <div className="plan-list-item__item">{plan.active ? "Active" : "Inactive"}</div>
         <div className="plan-list-item__item">{<Link to={`/plans/${plan.id}`}><span className="edit-icon"><Img src={Edit} /></span></Link>}</div>
-        <div className="plan-list-item__item"><button onClick={deletePlan.bind(null, plan.id)} disabled={plan.active}><span className="delete-icon"><Img src={Delete} /></span></button></div>
-        <div className="plan-list-item__item"><button onClick={setActive.bind(null, plan.id)} disabled={plan.active}>Set Active</button></div>
+        <div className="plan-list-item__item"><button onClick={deletePlan.bind(null, plan.id)} disabled={active}><span className="delete-icon"><Img src={Delete} /></span></button></div>
+        <div className="plan-list-item__item"><button onClick={setActive.bind(null, plan.id)} disabled={active}>Set Active</button></div>
       </div>
     </div>
   )

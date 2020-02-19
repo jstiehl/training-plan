@@ -41,8 +41,8 @@ const DefaultPlansView = ({ plans }) => {
   return (
     <div>
       <h1>Plans</h1>
-      {newPlan ?  <CreateNewPlan />: <button onClick={()=> setNewPlan(true)}>Create New Plan</button>}
       <PlansList plans={plans}/>
+      {newPlan ?  <CreateNewPlan cancel={() => setNewPlan(false)}/>: <button onClick={()=> setNewPlan(true)}>Add New Plan</button>}
     </div>
   )
 }
@@ -51,7 +51,7 @@ DefaultPlansView.propTypes = {
   plans: PropTypes.array.isRequired
 }
 
-const CreateNewPlan = () => {
+const CreateNewPlan = ({ cancel }) => {
   const dispatch = useDispatch()
   // let history = useHistory()
   const [planName, setPlanName] = useState('')
@@ -65,40 +65,38 @@ const CreateNewPlan = () => {
     }))
   }
 
+  const handleCancel = e => {
+    e.preventDefault()
+    setPlanName('')
+    setPlanDescription('')
+    cancel()
+  }
   return (
-    <div>
-      <input 
-        onChange={e => setPlanName(e.target.value)} 
-        placeholder='Enter Plan Name' 
-        value={planName}/>
-      <input 
-        onChange={e => setPlanDescription(e.target.value)} 
-        placeholder='Enter Plan Description' 
-        value={planDescription}/>
-      <button onClick={handleCreate}>Create Plan</button>
+    <div className='create-plan'>
+      <div>
+        <input 
+          onChange={e => setPlanName(e.target.value)} 
+          placeholder='Enter Plan Name' 
+          value={planName}/>
+      </div>
+      <div>
+        <input 
+          onChange={e => setPlanDescription(e.target.value)} 
+          placeholder='Enter Plan Description' 
+          value={planDescription}/>
+      </div>
+      <div className='submit-bar'>
+        <button onClick={handleCancel}>Cancel</button>
+        <button onClick={handleCreate}>Create Plan</button>
+      </div>
     </div>
   )
 }
 
 const PlanView = ({ plan }) => {
-  const [planPeriodName, setPlanPeriodName] = useState('')
-  const [planPeriodDuration, setPlanPeriodDuration] = useState('')
+  const [newPeriod, setNewPeriod] = useState(false)
   useFetching(PlansActions.getPlanPeriods.bind(null,plan.id))
   const periods = useSelector(state => state.plans.periods, shallowEqual)
-  const dispatch = useDispatch()
-
-  const handleCreate = e => {
-    e.preventDefault()
-    return dispatch(PlansActions.createPeriod({
-      name: planPeriodName,
-      duration: planPeriodDuration,
-      planid: plan.id
-    }))
-    .then(() => {
-      setPlanPeriodName('')
-      setPlanPeriodDuration('')
-    })
-  }
 
   if(!plan) {
     return null
@@ -111,6 +109,37 @@ const PlanView = ({ plan }) => {
         <h3>Plan Periods for {plan.name}</h3>
       </div>
       <PeriodsList periods={periods[plan.id] || []} />
+      {newPeriod ?  <CreateNewPeriod cancel={() => setNewPeriod(false)} planid={plan.id}/>: <button onClick={()=> setNewPeriod(true)}>Add New Period</button>}
+    </div>
+  )
+}
+
+const CreateNewPeriod = ({ cancel, planid }) => {
+  const [planPeriodName, setPlanPeriodName] = useState('')
+  const [planPeriodDuration, setPlanPeriodDuration] = useState('')
+  const [planPeriodDescription, setPlanPeriodDescription] = useState('')
+  const dispatch = useDispatch()
+  const handleCreate = e => {
+    e.preventDefault()
+    return dispatch(PlansActions.createPeriod({
+      name: planPeriodName,
+      duration: planPeriodDuration,
+      planid: planid
+    }))
+    .then(() => {
+      setPlanPeriodName('')
+      setPlanPeriodDuration('')
+    })
+  }
+  const handleCancel = e => {
+    e.preventDefault()
+    setPlanPeriodName('')
+    setPlanPeriodDuration('')
+    setPlanPeriodDescription('')
+    cancel()
+  }
+  return (
+    <div className='create-period'>
       <div>
         <input 
           onChange={e => setPlanPeriodName(e.target.value)} 
@@ -123,7 +152,16 @@ const PlanView = ({ plan }) => {
           placeholder='Enter Plan Period Duration in Weeks' 
           value={planPeriodDuration}/>
       </div>
-      <button onClick={handleCreate}>Create Period</button>
+      <div>
+        <input 
+          onChange={e => setPlanPeriodDescription(e.target.value)} 
+          placeholder='Enter Plan Period Description' 
+          value={planPeriodDescription}/>
+      </div>
+      <div className='submit-bar'>
+        <button onClick={handleCancel}>Cancel</button>
+        <button onClick={handleCreate}>Create Period</button>
+      </div>
     </div>
   )
 }

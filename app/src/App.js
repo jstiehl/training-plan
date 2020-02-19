@@ -1,40 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'
+import React, { useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import Img from 'react-image'
 import Routes from './Routes'
 import Nav from './components/Nav'
+import Header from './components/Header'
+import Login from './components/Login'
 import './App.scss';
-
-import logo from './assets/climb.png'
 
 import AuthActions from './actions/auth'
 
 const history = createBrowserHistory()
 
 function App() {
-  const [auth, setAuth] = useState(false)
+  const auth = useSelector(state => state.auth.authed)
   const dispatch = useDispatch()
   useEffect(() => {
-    const accessToken = window.localStorage.getItem('tpaccess')
-    if(!accessToken) {
-      return dispatch(AuthActions.login("jstiehl@gmail.com"))
-        .then(() => {
-          setAuth(true)
-        })
-    } else {
-      setAuth(true)
-    }
+    dispatch(AuthActions.verifyAuth())
   }, [dispatch, auth])
 
   return auth ? (
     <Router history={history}>
       <div className="App">
-        <header className="App-header">
-          <span className="app-logo"><Img src={logo} /></span>
-          <h2>Training Plan</h2>
-        </header>
+        <Header />
         <div className="main-container">
           <div className="main-navigation">
             <Nav />
@@ -45,7 +33,7 @@ function App() {
         </div>
       </div>
     </Router>
-  ) : "Loading"
+  ) : <Login />
 }
 
 export default App;
