@@ -13,6 +13,7 @@ const options = [
   { value: 'zone2', label: 'Zone 2' },
   { value: 'zone3', label: 'Zone 3' },
   { value: 'strength', label: 'Strength' },
+  { value: 'climbing', label: 'Climbing' },
 ];
 
 const WeeklyPlan = ({ match: { params: { id: planid, pid: periodid}}}) => {

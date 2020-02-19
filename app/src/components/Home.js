@@ -5,6 +5,7 @@ import Zone1Logo from '../assets/zone1.png'
 import Zone2Logo from '../assets/zone2.png'
 import Zone3Logo from '../assets/zone3.png'
 import StrengthLogo from '../assets/strength.png'
+import ClimbingLogo from '../assets/rock.png'
 
 const Home = ({ plan }) => {
   if(!plan) return null
@@ -33,12 +34,12 @@ const TodaysWorkouts = ({ workouts, today }) => {
         <h3>Morning Workout</h3>
         <div className="tod-workout">
           {workouts['AM'] ? <span className="workout-image"><Img src={WorkoutImage(workouts['AM'].type.value)} /></span> : null}
-          <p>{workouts['AM'] ? `${workouts['AM'].type.label} : ${workouts['AM'].description}`: 'No Morning Workout Today!'}</p>
+          <p>{workouts['AM'] ? `${workouts['AM'].type.label}: ${workouts['AM'].description}`: 'No Morning Workout Today!'}</p>
         </div>
         <h3>Evening Workout</h3>
         <div className="tod-workout">
           {workouts['PM'] ? <span className="workout-image"><Img src={WorkoutImage(workouts['PM'].type.value)} /></span> : null}
-          <p>{workouts['PM'] ? `${workouts['PM'].type.label} : ${workouts['PM'].description}`: 'No Evening Workout Today!'}</p>
+          <p>{workouts['PM'] ? `${workouts['PM'].type.label}: ${workouts['PM'].description}`: 'No Evening Workout Today!'}</p>
         </div>
       </div>
     </div>
@@ -55,6 +56,8 @@ function WorkoutImage(type) {
       return Zone3Logo
     case 'strength':
       return StrengthLogo
+    case 'climbing':
+      return ClimbingLogo
     default:
       return Zone1Logo
   }

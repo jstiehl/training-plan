@@ -246,6 +246,16 @@
     width: 50%;
     margin: 0 auto;
     margin-top: 25px;
+    button {
+      background-color: #97cc44;
+      /*background-color: #e23b5b;*/
+      height: 25px;
+      border-radius: 5px;
+      color: white;
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
   input {
     width: 50%;
