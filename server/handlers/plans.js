@@ -94,13 +94,13 @@ export default {
       })
   },
   createPeriodForPlan: (req, res) => {
-    const { name, duration } = req.body
+    const { name, duration, description } = req.body
     const planid = req.params.id
     if(!planid || !name) {
       return res.status(500).send({message: "Required Values Missing for Creating Plan Period"})
     }
     return db
-      .query('insert into training_plan_period(name, duration, planid) values ($1,$2,$3) returning *', [name, duration, planid])
+      .query('insert into training_plan_period(name, duration, planid, description) values ($1,$2,$3, $4) returning *', [name, duration, planid, description])
       .then(([period]) => {
         res.status(200).send(period)
       })

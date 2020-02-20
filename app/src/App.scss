@@ -144,8 +144,14 @@
   }
 }
 
-.plan-periods {
-  
+.plan-periods > button, .default-plans > button {
+  background-color: #97cc44;
+  height: 25px;
+  border-radius: 5px;
+  color: white;
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .day-card-container {
@@ -248,12 +254,14 @@
     margin-top: 25px;
     button {
       background-color: #97cc44;
-      /*background-color: #e23b5b;*/
       height: 25px;
       border-radius: 5px;
       color: white;
       &:hover{
         cursor: pointer;
+      }
+      &.cancel {
+        background-color: #e23b5b;
       }
     }
   }

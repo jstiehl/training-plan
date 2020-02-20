@@ -35,6 +35,7 @@ const request = async (path, options, data = {}) => {
           method: "POST",
           body: JSON.stringify({ token: refreshToken.token })
         })
+        .then(res => res.json())
         .then(tokens => {
           setTokens(tokens)
         })

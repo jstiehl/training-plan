@@ -39,7 +39,7 @@ Plans.propTypes = {
 const DefaultPlansView = ({ plans }) => {
   const [newPlan, setNewPlan] = useState(false)
   return (
-    <div>
+    <div className="default-plans">
       <h1>Plans</h1>
       <PlansList plans={plans}/>
       {newPlan ?  <CreateNewPlan cancel={() => setNewPlan(false)}/>: <button onClick={()=> setNewPlan(true)}>Add New Plan</button>}
@@ -86,7 +86,7 @@ const CreateNewPlan = ({ cancel }) => {
           value={planDescription}/>
       </div>
       <div className='submit-bar'>
-        <button onClick={handleCancel}>Cancel</button>
+        <button className="cancel" onClick={handleCancel}>Cancel</button>
         <button onClick={handleCreate}>Create Plan</button>
       </div>
     </div>
@@ -124,11 +124,14 @@ const CreateNewPeriod = ({ cancel, planid }) => {
     return dispatch(PlansActions.createPeriod({
       name: planPeriodName,
       duration: planPeriodDuration,
+      description: planPeriodDescription,
       planid: planid
     }))
     .then(() => {
       setPlanPeriodName('')
       setPlanPeriodDuration('')
+      setPlanPeriodDescription('')
+      cancel() //this just hides form
     })
   }
   const handleCancel = e => {
@@ -159,7 +162,7 @@ const CreateNewPeriod = ({ cancel, planid }) => {
           value={planPeriodDescription}/>
       </div>
       <div className='submit-bar'>
-        <button onClick={handleCancel}>Cancel</button>
+        <button className="cancel" onClick={handleCancel}>Cancel</button>
         <button onClick={handleCreate}>Create Period</button>
       </div>
     </div>

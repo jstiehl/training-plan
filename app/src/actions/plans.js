@@ -77,12 +77,12 @@ const PlansActions = {
         })  
     }
   },
-  createPeriod({ name, duration, planid }) {
+  createPeriod({ name, duration, description, planid }) {
     return dispatch => {
-      return fetch(`${config.api.host}/plans/${planid}/periods`, {
+      return request(`${config.api.host}/plans/${planid}/periods`, {
           method: "POST",
           auth: true
-        }, { name, duration })
+        }, { name, duration, description })
         .then(period => {
           return dispatch({
             type: types.PLAN_PERIOD_CREATED,
